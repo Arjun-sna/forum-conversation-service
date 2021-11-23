@@ -5,7 +5,7 @@ import conversationModelDefiner from "./conversation";
 
 const env = process.env.NODE_ENV || "development";
 const dbConfig = require("../config/config.json")[env];
-const modelDefiners = [conversationModelDefiner]
+const modelDefiners = [conversationModelDefiner];
 
 const logger = logHelper.makeLogger("SEQUELIZE");
 const getSequelizeInstance = () => {
