@@ -1,6 +1,4 @@
-require("./envConfigLoader")(process.env.NODE_ENV);
-
-import express, { Response, Request, Application } from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import http from "http";
 import logger from "./app/utils/logger";

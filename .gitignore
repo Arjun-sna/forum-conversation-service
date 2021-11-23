@@ -54,3 +54,5 @@ config/config.json
 dump.rdb
 
 ecosystem.config.js
+
+dist
