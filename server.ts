@@ -18,8 +18,6 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(require("method-override")());
-require("./dbHooks");
-require("./app/cron");
 
 // Add api routes
 initRoutes(app);
