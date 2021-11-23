@@ -3,12 +3,12 @@ require("./envConfigLoader")(process.env.NODE_ENV);
 import express, { Response, Request, Application } from "express";
 import cors from "cors";
 import http from "http";
-import logHelper from "./app/utils/logger";
+import logger from "./app/utils/logger";
 import { initRoutes } from "./app/routes";
 import initializeSentry from "./sentry";
 import { assertDatabaseConnectionOk } from "./app/db";
+import exceptionHandler from "./app/middlewares/exceptionHandler";
 
-const logger = logHelper.makeLogger("SERVER");
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(require("method-override")());
 
 // Add api routes
 initRoutes(app);
-
+app.use(exceptionHandler);
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response) => {
   res.status(404).send({
