@@ -1,13 +1,12 @@
 import { Sequelize } from "sequelize";
 import createAssociations from "./associations";
-import logHelper from "../utils/logger";
+import logger from "../utils/logger";
 import conversationModelDefiner from "./conversation";
 
 const env = process.env.NODE_ENV || "development";
 const dbConfig = require("../config/config.json")[env];
 const modelDefiners = [conversationModelDefiner];
 
-const logger = logHelper.makeLogger("SEQUELIZE");
 const getSequelizeInstance = () => {
   const { database, username, password } = dbConfig;
   const config = {

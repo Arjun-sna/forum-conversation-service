@@ -19,3 +19,5 @@ const logger = winston.createLogger({
     new winston.transports.Console({ format: winston.format.json() }),
   ],
 });
+
+export default logger;
