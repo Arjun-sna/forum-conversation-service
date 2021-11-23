@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { RequestHandler, Response, Request, NextFunction } from "express";
 
 function sendErrorResponse(res: Response, code: number, errorMessage: string) {
   res.status(code).send({ error: errorMessage });
@@ -23,6 +23,11 @@ async function asyncForEach<T>(array: T[], action: any) {
   }
   return await Promise.all(results);
 }
+
+export const catchAsyncController =
+  (fn: RequestHandler) => (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
 
 module.exports = {
   sendErrorResponse,

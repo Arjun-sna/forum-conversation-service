@@ -4,7 +4,7 @@ import express, { Response, Request, Application } from "express";
 import cors from "cors";
 import http from "http";
 import logHelper from "./app/utils/logger";
-import routes from "./app/routes";
+import { initRoutes } from "./app/routes";
 import initializeSentry from "./sentry";
 import { assertDatabaseConnectionOk } from "./app/db";
 
@@ -22,7 +22,7 @@ require("./dbHooks");
 require("./app/cron");
 
 // Add api routes
-routes(app);
+initRoutes(app);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response) => {
