@@ -1,10 +1,14 @@
 import { RequestHandler, Response, Request, NextFunction } from "express";
 
-function sendErrorResponse(res: Response, code: number, errorMessage: string) {
+export function sendErrorResponse(
+  res: Response,
+  code: number,
+  errorMessage: string
+) {
   res.status(code).send({ error: errorMessage });
 }
 
-function handleError(res: Response, error: any) {
+export function handleError(res: Response, error: any) {
   if (error.name === "SequelizeValidationError") {
     sendErrorResponse(res, 422, "Bad request / Missing data.");
   } else {
@@ -12,11 +16,11 @@ function handleError(res: Response, error: any) {
   }
 }
 
-function toFixed(value: number, digits = 2) {
+export function toFixed(value: number, digits = 2) {
   return Number(value.toFixed(digits));
 }
 
-async function asyncForEach<T>(array: T[], action: any) {
+export async function asyncForEach<T>(array: T[], action: any) {
   const results = [];
   for (let index = 0; index < array.length; index++) {
     results.push(action(array[index], index, array));
@@ -28,10 +32,3 @@ export const catchAsyncController =
   (fn: RequestHandler) => (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
-
-module.exports = {
-  sendErrorResponse,
-  handleError,
-  toFixed,
-  asyncForEach,
-};

@@ -4,7 +4,7 @@ import logger from "../utils/logger";
 import conversationModelDefiner from "./conversation";
 
 const env = process.env.NODE_ENV || "development";
-const dbConfig = require("../config/config.json")[env];
+const dbConfig = require("../../config/config.json")[env];
 const modelDefiners = [conversationModelDefiner];
 
 const getSequelizeInstance = () => {

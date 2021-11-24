@@ -1,0 +1,20 @@
+{
+  "development": {
+    "username": "user_1",
+    "password": null,
+    "database": "node_app_dev",
+    "host": "localhost",
+    "port": "5432",
+    "dialect": "postgres",
+    "operatorsaliases": false
+  },
+  "test": {
+    "username": "ubuntu",
+    "password": null,
+    "database": "node_app_test",
+    "host": "localhost",
+    "port": "5432",
+    "dialect": "postgres",
+    "operatorsaliases": false
+  }
+}

@@ -50,6 +50,7 @@
     "@types/nock": "^11.1.0",
     "@types/node": "^16.11.9",
     "@types/redis": "^2.8.32",
+    "@types/validator": "^13.7.0",
     "chai": "4.3.4",
     "coveralls": "^3.1.1",
     "eslint": "^8.3.0",
