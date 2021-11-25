@@ -1,7 +1,8 @@
+import { ConversationModel } from "../types";
 import { DataTypes, Sequelize } from "sequelize";
 
 export default (sequelize: Sequelize) => {
-  sequelize.define(
+  sequelize.define<ConversationModel>(
     "Conversation",
     {
       id: {
@@ -10,33 +11,39 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        field: "user_id",
       },
-      from_user_id: {
+      fromUserId: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        field: "from_user_id",
       },
-      to_user_id: {
+      toUserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        field: "to_user_id",
       },
-      shared_id: {
+      sharedId: {
         type: DataTypes.UUID,
         allowNull: false,
+        field: "shared_id",
       },
       subject: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      date_created: {
+      dateCreated: {
         allowNull: true,
         type: DataTypes.DATE,
+        field: "date_created",
       },
-      date_modified: {
+      dateModified: {
         allowNull: true,
         type: DataTypes.DATE,
+        field: "date_modified",
       },
       trash: {
         type: DataTypes.BOOLEAN,
