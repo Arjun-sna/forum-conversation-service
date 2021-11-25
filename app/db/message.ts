@@ -1,7 +1,7 @@
 import { DataTypes, Sequelize } from "sequelize";
 
 export default (sequelize: Sequelize) => {
-  sequelize.define("conversation", {
+  sequelize.define("Message", {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -11,20 +11,10 @@ export default (sequelize: Sequelize) => {
     conversation_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: "conversations",
-        key: "id",
-      },
-      onDelete: "CASCADE",
     },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: {
-        model: "users",
-        key: "id",
-      },
-      onDelete: "SET NULL",
     },
     message: {
       type: DataTypes.TEXT,

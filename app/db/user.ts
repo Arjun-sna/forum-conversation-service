@@ -1,7 +1,7 @@
 import { DataTypes, Sequelize } from "sequelize";
 
 export default (sequelize: Sequelize) => {
-  sequelize.define("conversation", {
+  sequelize.define("User", {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
