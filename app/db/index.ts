@@ -2,10 +2,16 @@ import { Sequelize } from "sequelize";
 import createAssociations from "./associations";
 import logger from "../utils/logger";
 import conversationModelDefiner from "./conversation";
+import userModelDefiner from "./user";
+import messageModelDefiner from "./message";
 
 const env = process.env.NODE_ENV || "development";
 const dbConfig = require("../../config/config.json")[env];
-const modelDefiners = [conversationModelDefiner];
+const modelDefiners = [
+  conversationModelDefiner,
+  userModelDefiner,
+  messageModelDefiner,
+];
 
 const getSequelizeInstance = () => {
   const { database, username, password } = dbConfig;
