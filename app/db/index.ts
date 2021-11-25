@@ -42,4 +42,4 @@ export async function assertDatabaseConnectionOk() {
   }
 }
 
-export default sequelize;
+export default { sequelize, models: sequelize.models };

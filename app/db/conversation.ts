@@ -1,52 +1,66 @@
+import { ConversationModel } from "../types";
 import { DataTypes, Sequelize } from "sequelize";
 
 export default (sequelize: Sequelize) => {
-  sequelize.define("Conversation", {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER,
+  sequelize.define<ConversationModel>(
+    "Conversation",
+    {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: "user_id",
+      },
+      fromUserId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "from_user_id",
+      },
+      toUserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: "to_user_id",
+      },
+      sharedId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        field: "shared_id",
+      },
+      subject: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      dateCreated: {
+        allowNull: true,
+        type: DataTypes.DATE,
+        field: "date_created",
+      },
+      dateModified: {
+        allowNull: true,
+        type: DataTypes.DATE,
+        field: "date_modified",
+      },
+      trash: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      draft: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      unread: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    from_user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    to_user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    shared_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
-    subject: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    date_created: {
-      allowNull: false,
-      type: DataTypes.DATE,
-    },
-    date_modified: {
-      allowNull: false,
-      type: DataTypes.DATE,
-    },
-    trash: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    draft: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    unread: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-  });
+    {
+      tableName: "conversations",
+      timestamps: false,
+    }
+  );
 };
