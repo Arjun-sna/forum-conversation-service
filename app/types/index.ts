@@ -1,4 +1,9 @@
+import { Request } from "express";
 import { Model, Optional } from "sequelize/types";
+
+export interface CustomRequest extends Request {
+  currentUser: any;
+}
 
 export type ConversationInput = {
   subject: string;

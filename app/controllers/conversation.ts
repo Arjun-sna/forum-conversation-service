@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
+import { CustomRequest } from "../types";
+import { Response } from "express";
 import ConversationService from "../services/conversation";
 
 const conversationService = new ConversationService();
-export async function createConversation(req: Request, res: Response) {
-  const { body } = req;
-  const result = await conversationService.createConversation(body, {
-    id: 1,
-    username: "arjun",
-    email: "arj@gmailc.om",
-  });
+export async function createConversation(req: CustomRequest, res: Response) {
+  const { body, currentUser } = req;
+  const result = await conversationService.createConversation(
+    body,
+    currentUser
+  );
 
   res.send({ id: result });
 }
