@@ -1,7 +1,11 @@
 import { v4 as uuid } from "uuid";
 import { ServerError } from "../exceptions/ServerError";
 import db from "../db";
-import { ConversationInput, User as UserType } from "../types";
+import {
+  ConversationModel,
+  ConversationInput,
+  User as UserType,
+} from "../types";
 
 const { Conversation, User } = db.models;
 const sequelize = db.sequelize;
@@ -18,44 +22,40 @@ export default class ConversationService {
   }
 
   async createConversation(
-    conversationData: ConversationInput,
+    conversationInput: ConversationInput,
     currentUser: UserType
   ) {
     const toUser = (await this.validateUser(
-      conversationData.toUserId
+      conversationInput.toUserId
     )) as UserType;
 
     const sharedId = uuid();
     const transaction = await sequelize.transaction();
-    const conversationSender = await Conversation.create(
-      {
-        subject: conversationData.subject,
-        user_id: currentUser.id,
-        from_user_id: currentUser.id,
-        to_user_id: toUser.id,
-        shared_id: sharedId,
-        trash: false,
-        unread: false,
-        draft: false,
-      },
-      { transaction }
-    );
+    const conversationData = {
+      subject: conversationInput.subject,
+      userId: currentUser.id,
+      fromUserId: currentUser.id,
+      toUserId: toUser.id,
+      sharedId: sharedId,
+      trash: false,
+      unread: false,
+      draft: false,
+    };
 
-    const conversationReceiver = await Conversation.create(
+    const conversationSender = await Conversation.create(conversationData, {
+      transaction,
+    });
+
+    await Conversation.create(
       {
-        subject: conversationData.subject,
-        user_id: toUser.id,
-        from_user_id: currentUser.id,
-        to_user_id: toUser.id,
-        shared_id: sharedId,
-        trash: false,
+        ...conversationData,
+        userId: toUser.id,
         unread: true,
-        draft: false,
       },
       { transaction }
     );
 
     transaction.commit();
-    return conversationSender;
+    return (conversationSender as ConversationModel).id;
   }
 }

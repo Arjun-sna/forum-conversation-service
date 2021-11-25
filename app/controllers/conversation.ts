@@ -10,5 +10,5 @@ export async function createConversation(req: Request, res: Response) {
     email: "arj@gmailc.om",
   });
 
-  res.send({ success: true });
+  res.send({ id: result });
 }
