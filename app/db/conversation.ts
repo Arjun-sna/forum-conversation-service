@@ -1,8 +1,27 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 
-export default (sequelize: any) => {
+export default (sequelize: Sequelize) => {
   sequelize.define("conversation", {
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE,
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    date_created: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    date_modified: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
   });
 };
