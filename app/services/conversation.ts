@@ -98,6 +98,7 @@ export default class ConversationService {
   ) {
     const offset = limit * (page - 1);
     const conversations = await user.getConversations({
+      where: { draft: false, trash: false },
       limit,
       offset,
       include: ["fromUser", "toUser"],
