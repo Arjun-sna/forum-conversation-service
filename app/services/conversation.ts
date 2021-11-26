@@ -100,6 +100,7 @@ export default class ConversationService {
     const conversations = await user.getConversations({
       limit,
       offset,
+      include: ["fromUser", "toUser"],
     });
 
     return conversations;

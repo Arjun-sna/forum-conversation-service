@@ -22,7 +22,7 @@ export async function createConversation(req: CustomRequest, res: Response) {
 export async function getConversations(req: CustomRequest, res: Response) {
   const { currentUser, query } = req;
   const page = query.page ? parseInt(query.page as string) : 1;
-  const perPage = query.perPage ? parseInt(query.per_page as string) : 10;
+  const perPage = query.per_page ? parseInt(query.per_page as string) : 10;
 
   const result = await conversationService.getConversationForUser(
     currentUser,
