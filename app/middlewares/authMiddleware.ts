@@ -1,15 +1,17 @@
-import { CustomRequest } from "../types";
+import { CustomRequest, UserModel } from "../types";
 import { Response, NextFunction } from "express";
+import db from "../db";
 
-export default function (
+const {
+  models: { User },
+} = db;
+
+export default async function (
   req: CustomRequest,
   res: Response,
   next: NextFunction
 ) {
-  req.currentUser = {
-    id: 1,
-    username: "arjun",
-    email: "arj@gmailc.om",
-  };
+  const currentUser = await User.findOne({ where: { id: 1 } });
+  req.currentUser = currentUser as UserModel;
   next();
 }
