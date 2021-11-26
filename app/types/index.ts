@@ -15,6 +15,11 @@ export type ConversationInput = {
   unread: boolean;
 };
 
+export type MessageInput = {
+  message: string;
+  userId: number;
+};
+
 export type Conversation = {
   id: number;
   subject: string;
