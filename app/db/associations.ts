@@ -11,4 +11,7 @@ export default (sequelize: Sequelize) => {
 
   // Message
   Message.belongsTo(Conversation, { foreignKey: "conversation_id" });
+
+  //User
+  User.hasMany(Conversation, { foreignKey: "user_id" });
 };
