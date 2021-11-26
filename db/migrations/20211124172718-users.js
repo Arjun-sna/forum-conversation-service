@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -7,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       username: {
         type: Sequelize.STRING,
@@ -25,10 +25,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.DATE,
       },
-    })
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable("users");
-  }
+  },
 };

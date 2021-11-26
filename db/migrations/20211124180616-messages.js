@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -7,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       conversation_id: {
         type: Sequelize.INTEGER,
@@ -16,7 +16,7 @@ module.exports = {
           model: "conversations",
           key: "id",
         },
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
       },
       user_id: {
         type: Sequelize.INTEGER,
@@ -25,7 +25,7 @@ module.exports = {
           model: "users",
           key: "id",
         },
-        onDelete: 'SET NULL',
+        onDelete: "SET NULL",
       },
       message: {
         type: Sequelize.TEXT,
@@ -34,11 +34,11 @@ module.exports = {
       date_created: {
         allowNull: false,
         type: Sequelize.DATE,
-      }
-    })
+      },
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable("conversations");
-  }
+  },
 };
