@@ -91,19 +91,26 @@ export default class ConversationService {
     return (conversationSender as ConversationModel).id;
   }
 
-  async getConversationForUser(
-    user: any,
-    page: number = 1,
-    limit: number = 10
-  ) {
+  async getUserConversations(user: any, page: number = 1, limit: number = 10) {
     const offset = limit * (page - 1);
-    const conversations = await user.getConversations({
+    return user.getConversations({
       where: { draft: false, trash: false },
       limit,
       offset,
       include: ["fromUser", "toUser"],
     });
+  }
 
-    return conversations;
+  async getConversation(conversationId: number, user: any) {
+    const conversation = await Conversation.findOne({
+      where: { id: conversationId, userId: user.id },
+      include: ["fromUser", "toUser", "messages"],
+    });
+
+    if (!conversation) {
+      throw new ServerError("Conversation not found", 422);
+    }
+
+    return conversation;
   }
 }

@@ -11,7 +11,7 @@ const exceptionHandler: ErrorRequestHandler = function (err, req, res, next) {
       method: req.method,
       queryParams: JSON.stringify(req.query),
       body: JSON.stringify(req.body),
-      errorInfo: JSON.stringify(err),
+      errorInfo: err,
       response_code: 500,
     });
 
