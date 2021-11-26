@@ -5,13 +5,15 @@ import {
   ConversationModel,
   ConversationInput,
   User as UserType,
+  MessageInput,
 } from "../types";
+import { Transaction } from "sequelize/types";
 
-const { Conversation, User } = db.models;
+const { Conversation, User, Message } = db.models;
 const sequelize = db.sequelize;
 
 export default class ConversationService {
-  async validateUser(userId: number): Promise<any> {
+  private async validateUser(userId: number): Promise<any> {
     const user = await User.findOne({ where: { id: userId } });
 
     if (user == null) {
@@ -19,6 +21,27 @@ export default class ConversationService {
     }
 
     return user;
+  }
+
+  private async saveConversation(
+    conversationData: ConversationInput,
+    messageData: MessageInput,
+    transaction: Transaction
+  ) {
+    const conversation = await Conversation.create(conversationData, {
+      transaction,
+    });
+
+    await Message.create(
+      {
+        message: messageData.message,
+        userId: messageData.userId,
+        conversationId: (conversation as ConversationModel).id,
+      },
+      { transaction }
+    );
+
+    return conversation;
   }
 
   async createConversation(
@@ -30,7 +53,6 @@ export default class ConversationService {
     )) as UserType;
 
     const sharedId = uuid();
-    const transaction = await sequelize.transaction();
     const conversationData = {
       subject: conversationInput.subject,
       userId: currentUser.id,
@@ -41,18 +63,22 @@ export default class ConversationService {
       unread: false,
       draft: false,
     };
+    const messageData = { message: "test", userId: currentUser.id };
 
-    const conversationSender = await Conversation.create(conversationData, {
-      transaction,
-    });
-
-    await Conversation.create(
+    const transaction = await sequelize.transaction();
+    const conversationSender = await this.saveConversation(
+      conversationData,
+      messageData,
+      transaction
+    );
+    await this.saveConversation(
       {
         ...conversationData,
         userId: toUser.id,
         unread: true,
       },
-      { transaction }
+      messageData,
+      transaction
     );
 
     transaction.commit();
