@@ -24,10 +24,21 @@ export async function getConversations(req: CustomRequest, res: Response) {
   const page = query.page ? parseInt(query.page as string) : 1;
   const perPage = query.per_page ? parseInt(query.per_page as string) : 10;
 
-  const result = await conversationService.getConversationForUser(
+  const result = await conversationService.getUserConversations(
     currentUser,
     page,
     perPage
+  );
+  res.send(result);
+}
+
+export async function getConversation(req: CustomRequest, res: Response) {
+  const { currentUser, params } = req;
+  // todo: validate params
+  const { conversationId } = params;
+  const result = await conversationService.getConversation(
+    parseInt(conversationId),
+    currentUser
   );
   res.send(result);
 }
