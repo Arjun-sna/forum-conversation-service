@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import { DataTypes, Sequelize } from "sequelize";
 
 export default (sequelize: Sequelize) => {
@@ -10,21 +11,25 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      conversation_id: {
+      conversationId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        field: "conversation_id",
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        field: "user_id",
       },
       message: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      date_created: {
+      dateCreated: {
         allowNull: false,
         type: DataTypes.DATE,
+        field: "date_created",
+        defaultValue: moment().format(),
       },
     },
     {

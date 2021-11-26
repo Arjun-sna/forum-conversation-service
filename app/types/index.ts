@@ -7,12 +7,18 @@ export interface CustomRequest extends Request {
 
 export type ConversationInput = {
   subject: string;
+  message?: string;
   fromUserId: number;
   toUserId: number;
   userId: number;
   trash: boolean;
   draft: boolean;
   unread: boolean;
+};
+
+export type MessageInput = {
+  message: string;
+  userId: number;
 };
 
 export type Conversation = {
