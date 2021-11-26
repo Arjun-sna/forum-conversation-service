@@ -6,6 +6,7 @@ import {
   ConversationInput,
   User as UserType,
   MessageInput,
+  UserModel,
 } from "../types";
 import { Transaction } from "sequelize/types";
 
@@ -88,5 +89,21 @@ export default class ConversationService {
 
     transaction.commit();
     return (conversationSender as ConversationModel).id;
+  }
+
+  async getConversationForUser(
+    user: any,
+    page: number = 1,
+    limit: number = 10
+  ) {
+    const offset = limit * (page - 1);
+    const conversations = await user.getConversations({
+      where: { draft: false, trash: false },
+      limit,
+      offset,
+      include: ["fromUser", "toUser"],
+    });
+
+    return conversations;
   }
 }

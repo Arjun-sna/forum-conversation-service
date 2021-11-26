@@ -1,10 +1,6 @@
 import { Request } from "express";
 import { Model, Optional } from "sequelize/types";
 
-export interface CustomRequest extends Request {
-  currentUser: any;
-}
-
 export type ConversationInput = {
   subject: string;
   message?: string;
@@ -47,3 +43,11 @@ export type User = {
   email: string;
   avatar?: string;
 };
+
+interface UserCreationAttributes extends Optional<User, "id"> {}
+
+export interface UserModel extends Model<User, UserCreationAttributes>, User {}
+
+export interface CustomRequest extends Request {
+  currentUser: UserModel;
+}
