@@ -6,15 +6,15 @@ export default (sequelize: Sequelize) => {
   // Conversation
   Conversation.hasMany(Message, { foreignKey: "conversation_id" });
   Conversation.belongsTo(User, {
-    foreignKey: "user_id",
+    foreignKey: "userId",
     as: "user",
   });
   Conversation.belongsTo(User, {
-    foreignKey: "from_user_id",
+    foreignKey: "fromUserId",
     as: "fromUser",
   });
   Conversation.belongsTo(User, {
-    foreignKey: "to_user_id",
+    foreignKey: "toUserId",
     as: "toUser",
   });
 
@@ -22,5 +22,5 @@ export default (sequelize: Sequelize) => {
   Message.belongsTo(Conversation, { foreignKey: "conversation_id" });
 
   //User
-  User.hasMany(Conversation, { foreignKey: "user_id" });
+  User.hasMany(Conversation, { foreignKey: "userId" });
 };
