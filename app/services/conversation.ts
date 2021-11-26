@@ -23,7 +23,7 @@ export default class ConversationService {
     return user;
   }
 
-  private async saveConversation(
+  private async saveConversationWithMessage(
     conversationData: ConversationInput,
     messageData: MessageInput,
     transaction: Transaction
@@ -32,14 +32,16 @@ export default class ConversationService {
       transaction,
     });
 
-    await Message.create(
-      {
-        message: messageData.message,
-        userId: messageData.userId,
-        conversationId: (conversation as ConversationModel).id,
-      },
-      { transaction }
-    );
+    if (messageData && messageData.message) {
+      await Message.create(
+        {
+          message: messageData.message,
+          userId: messageData.userId,
+          conversationId: (conversation as ConversationModel).id,
+        },
+        { transaction }
+      );
+    }
 
     return conversation;
   }
@@ -63,15 +65,18 @@ export default class ConversationService {
       unread: false,
       draft: false,
     };
-    const messageData = { message: "test", userId: currentUser.id };
+    const messageData = {
+      message: conversationInput.message,
+      userId: currentUser.id,
+    };
 
     const transaction = await sequelize.transaction();
-    const conversationSender = await this.saveConversation(
+    const conversationSender = await this.saveConversationWithMessage(
       conversationData,
       messageData,
       transaction
     );
-    await this.saveConversation(
+    await this.saveConversationWithMessage(
       {
         ...conversationData,
         userId: toUser.id,
