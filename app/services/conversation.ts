@@ -104,7 +104,14 @@ export default class ConversationService {
   async getConversation(conversationId: number, user: any) {
     const conversation = await Conversation.findOne({
       where: { id: conversationId, userId: user.id },
-      include: ["fromUser", "toUser", "messages"],
+      include: [
+        "fromUser",
+        "toUser",
+        {
+          association: "messages",
+          attributes: { exclude: ["conversationId"] },
+        },
+      ],
     });
 
     if (!conversation) {
