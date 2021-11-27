@@ -4,7 +4,10 @@ export default (sequelize: Sequelize) => {
   const { Conversation, User, Message } = sequelize.models;
 
   // Conversation
-  Conversation.hasMany(Message, { foreignKey: "conversation_id" });
+  Conversation.hasMany(Message, {
+    foreignKey: "conversationId",
+    as: "messages",
+  });
   Conversation.belongsTo(User, {
     foreignKey: "userId",
     as: "user",
@@ -17,9 +20,6 @@ export default (sequelize: Sequelize) => {
     foreignKey: "toUserId",
     as: "toUser",
   });
-
-  // Message
-  Message.belongsTo(Conversation, { foreignKey: "conversation_id" });
 
   //User
   User.hasMany(Conversation, { foreignKey: "userId" });
