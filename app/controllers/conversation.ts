@@ -56,3 +56,19 @@ export async function addMessage(req: CustomRequest, res: Response) {
 
   res.send(result);
 }
+
+export async function moveConversationToTrash(
+  req: CustomRequest,
+  res: Response
+) {
+  const { currentUser, params } = req;
+  const { conversationId } = params;
+
+  // todo: validate messageData
+  const result = await conversationService.moveToTrash(
+    parseInt(conversationId),
+    currentUser
+  );
+
+  res.send({ success: true });
+}
