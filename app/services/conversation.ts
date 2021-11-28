@@ -87,7 +87,7 @@ export default class ConversationService {
       transaction
     );
 
-    transaction.commit();
+    await transaction.commit();
     return (conversationSender as ConversationModel).id;
   }
 
@@ -136,14 +136,6 @@ export default class ConversationService {
     messageData: MessageInput,
     user: any
   ) {
-    // const conversation: any = await Conversation.findOne({
-    //   where: { id: conversationId, userId: user.id },
-    //   attributes: ["id", "toUserId", "fromUserId", "sharedId"],
-    // });
-
-    // if (!conversation) {
-    //   throw new ServerError("Conversation not found", 422);
-    // }
     const conversation: any = await this.getConversation(
       conversationId,
       user,
@@ -155,35 +147,49 @@ export default class ConversationService {
         ? conversation.fromUserId
         : conversation.toUserId;
 
-    const message = await Message.create({
-      message: messageData.message,
-      userId: user.id,
-      conversationId: (conversation as ConversationModel).id,
-    });
+    const transaction = await sequelize.transaction();
+    try {
+      const message = await Message.create(
+        {
+          message: messageData.message,
+          userId: user.id,
+          conversationId: (conversation as ConversationModel).id,
+        },
+        { transaction }
+      );
 
-    const [receiverConversation]: any = await Conversation.findOrCreate({
-      where: {
-        userId: receiverId,
-        sharedId: conversation.sharedId,
-      },
-      defaults: {
-        subject: conversation.subject,
-        userId: receiverId,
-        fromUserId: user.id,
-        toUserId: receiverId,
-        sharedId: conversation.sharedId,
-        trash: false,
-        unread: false,
-        draft: false,
-      },
-    });
+      const [receiverConversation]: any = await Conversation.findOrCreate({
+        where: {
+          userId: receiverId,
+          sharedId: conversation.sharedId,
+        },
+        defaults: {
+          subject: conversation.subject,
+          userId: receiverId,
+          fromUserId: user.id,
+          toUserId: receiverId,
+          sharedId: conversation.sharedId,
+          trash: false,
+          unread: false,
+          draft: false,
+        },
+        transaction,
+      });
 
-    await Message.create({
-      message: messageData.message,
-      userId: user.id,
-      conversationId: receiverConversation.id,
-    });
+      await Message.create(
+        {
+          message: messageData.message,
+          userId: user.id,
+          conversationId: receiverConversation.id,
+        },
+        { transaction }
+      );
+      await transaction.commit();
 
-    return message;
+      return message;
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
   }
 }
