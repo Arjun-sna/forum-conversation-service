@@ -197,4 +197,14 @@ export default class ConversationService {
       throw err;
     }
   }
+
+  async moveToTrash(conversationId: number, user: any) {
+    const conversation: any = await this.getConversation(
+      conversationId,
+      user,
+      false
+    );
+    conversation.trash = true;
+    return conversation.save();
+  }
 }
