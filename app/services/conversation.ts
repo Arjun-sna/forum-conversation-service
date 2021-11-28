@@ -120,4 +120,10 @@ export default class ConversationService {
 
     return conversation;
   }
+
+  async addMessageToConversation(
+    conversationId: number,
+    messageData: MessageInput,
+    user: any
+  ) {}
 }
