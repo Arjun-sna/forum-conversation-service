@@ -1,4 +1,5 @@
 import {
+  addMessage,
   createConversation,
   getConversation,
   getConversations,
@@ -16,6 +17,10 @@ router.get("/conversation", catchAsyncController(getConversations));
 router.get(
   "/conversation/:conversationId",
   catchAsyncController(getConversation)
+);
+router.post(
+  "/conversation/:conversationId/message",
+  catchAsyncController(addMessage)
 );
 
 export default router;
