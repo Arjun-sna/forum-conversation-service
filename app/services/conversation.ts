@@ -101,17 +101,27 @@ export default class ConversationService {
     });
   }
 
-  async getConversation(conversationId: number, user: any) {
+  async getConversation(
+    conversationId: number,
+    user: any,
+    withAssociation: boolean = true
+  ) {
+    const association = withAssociation
+      ? {
+          include: [
+            "fromUser",
+            "toUser",
+            {
+              association: "messages",
+              attributes: { exclude: ["conversationId"] },
+            },
+          ],
+        }
+      : {};
+
     const conversation = await Conversation.findOne({
       where: { id: conversationId, userId: user.id },
-      include: [
-        "fromUser",
-        "toUser",
-        {
-          association: "messages",
-          attributes: { exclude: ["conversationId"] },
-        },
-      ],
+      ...association,
     });
 
     if (!conversation) {
@@ -125,5 +135,55 @@ export default class ConversationService {
     conversationId: number,
     messageData: MessageInput,
     user: any
-  ) {}
+  ) {
+    // const conversation: any = await Conversation.findOne({
+    //   where: { id: conversationId, userId: user.id },
+    //   attributes: ["id", "toUserId", "fromUserId", "sharedId"],
+    // });
+
+    // if (!conversation) {
+    //   throw new ServerError("Conversation not found", 422);
+    // }
+    const conversation: any = await this.getConversation(
+      conversationId,
+      user,
+      false
+    );
+
+    const receiverId =
+      user.id === conversation.toUserId
+        ? conversation.fromUserId
+        : conversation.toUserId;
+
+    const message = await Message.create({
+      message: messageData.message,
+      userId: user.id,
+      conversationId: (conversation as ConversationModel).id,
+    });
+
+    const [receiverConversation]: any = await Conversation.findOrCreate({
+      where: {
+        userId: receiverId,
+        sharedId: conversation.sharedId,
+      },
+      defaults: {
+        subject: conversation.subject,
+        userId: receiverId,
+        fromUserId: user.id,
+        toUserId: receiverId,
+        sharedId: conversation.sharedId,
+        trash: false,
+        unread: false,
+        draft: false,
+      },
+    });
+
+    await Message.create({
+      message: messageData.message,
+      userId: user.id,
+      conversationId: receiverConversation.id,
+    });
+
+    return message;
+  }
 }

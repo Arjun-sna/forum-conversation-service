@@ -49,8 +49,10 @@ export async function addMessage(req: CustomRequest, res: Response) {
   // todo: validate messageData
 
   const result = await conversationService.addMessageToConversation(
-    conversationId,
+    parseInt(conversationId),
     messageData,
     currentUser
   );
+
+  res.send(result);
 }
