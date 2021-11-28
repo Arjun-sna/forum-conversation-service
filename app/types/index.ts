@@ -14,7 +14,7 @@ export type ConversationInput = {
 
 export type MessageInput = {
   message: string;
-  userId: number;
+  userId?: number;
 };
 
 export type Conversation = {
