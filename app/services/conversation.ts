@@ -72,23 +72,28 @@ export default class ConversationService {
     };
 
     const transaction = await sequelize.transaction();
-    const conversationSender = await this.saveConversationWithMessage(
-      conversationData,
-      messageData,
-      transaction
-    );
-    await this.saveConversationWithMessage(
-      {
-        ...conversationData,
-        userId: toUser.id,
-        unread: true,
-      },
-      messageData,
-      transaction
-    );
+    try {
+      const conversationSender = await this.saveConversationWithMessage(
+        conversationData,
+        messageData,
+        transaction
+      );
+      await this.saveConversationWithMessage(
+        {
+          ...conversationData,
+          userId: toUser.id,
+          unread: true,
+        },
+        messageData,
+        transaction
+      );
 
-    await transaction.commit();
-    return (conversationSender as ConversationModel).id;
+      await transaction.commit();
+      return (conversationSender as ConversationModel).id;
+    } catch (err) {
+      transaction.rollback();
+      throw err;
+    }
   }
 
   async getUserConversations(user: any, page: number = 1, limit: number = 10) {
