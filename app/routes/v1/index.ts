@@ -4,6 +4,7 @@ import {
   getConversation,
   getConversations,
   moveConversationToTrash,
+  restoreConversationFromTrash,
 } from "../../controllers/conversation";
 import { Router } from "express";
 import { getHealth } from "../../controllers/health";
@@ -26,6 +27,10 @@ router.post(
 router.post(
   "/conversation/:conversationId/safe_delete",
   catchAsyncController(moveConversationToTrash)
+);
+router.post(
+  "/conversation/:conversationId/restore",
+  catchAsyncController(restoreConversationFromTrash)
 );
 
 export default router;
