@@ -42,3 +42,17 @@ export async function getConversation(req: CustomRequest, res: Response) {
   );
   res.send(result);
 }
+
+export async function addMessage(req: CustomRequest, res: Response) {
+  const { currentUser, body: messageData, params } = req;
+  const { conversationId } = params;
+  // todo: validate messageData
+
+  const result = await conversationService.addMessageToConversation(
+    parseInt(conversationId),
+    messageData,
+    currentUser
+  );
+
+  res.send(result);
+}
