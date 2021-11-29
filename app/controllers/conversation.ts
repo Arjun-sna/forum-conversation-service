@@ -1,4 +1,4 @@
-import { CustomRequest } from "../types";
+import { ConversationType, CustomRequest } from "../types";
 import { Response } from "express";
 import ConversationService from "../services/conversation";
 import { ServerError } from "../exceptions/ServerError";
@@ -27,7 +27,8 @@ export async function getConversations(req: CustomRequest, res: Response) {
   const result = await conversationService.getUserConversations(
     currentUser,
     page,
-    perPage
+    perPage,
+    query.type as ConversationType
   );
   res.send(result);
 }
