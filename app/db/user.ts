@@ -17,13 +17,15 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      date_created: {
+      dateCreated: {
         allowNull: false,
         type: DataTypes.DATE,
+        field: "date_created",
       },
-      date_modified: {
+      dateModified: {
         allowNull: false,
         type: DataTypes.DATE,
+        field: "date_modified",
       },
     },
     {
