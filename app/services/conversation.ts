@@ -7,6 +7,7 @@ import {
   User as UserType,
   MessageInput,
   UserModel,
+  ConversationType,
 } from "../types";
 import { Transaction } from "sequelize/types";
 
@@ -96,10 +97,16 @@ export default class ConversationService {
     }
   }
 
-  async getUserConversations(user: any, page: number = 1, limit: number = 10) {
+  async getUserConversations(
+    user: any,
+    page: number = 1,
+    limit: number = 10,
+    type: ConversationType = ConversationType.ALL
+  ) {
     const offset = limit * (page - 1);
+    const filterTrash = type === ConversationType.TRASH;
     return user.getConversations({
-      where: { draft: false, trash: false },
+      where: { draft: false, trash: filterTrash },
       limit,
       offset,
       include: ["fromUser", "toUser"],

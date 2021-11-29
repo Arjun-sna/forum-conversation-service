@@ -51,3 +51,9 @@ export interface UserModel extends Model<User, UserCreationAttributes>, User {}
 export interface CustomRequest extends Request {
   currentUser: UserModel;
 }
+
+export enum ConversationType {
+  ALL = "all",
+  TRASH = "trash",
+  DRAFT = "draft",
+}
