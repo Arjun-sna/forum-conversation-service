@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import { ConversationModel } from "../types";
 import { DataTypes, Sequelize } from "sequelize";
 
@@ -39,6 +40,7 @@ export default (sequelize: Sequelize) => {
         allowNull: true,
         type: DataTypes.DATE,
         field: "date_created",
+        defaultValue: moment().format(),
       },
       dateModified: {
         allowNull: true,
