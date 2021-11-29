@@ -213,4 +213,13 @@ export default class ConversationService {
       conversation.save();
     }
   }
+
+  async deleteConversation(conversationId: number, user: any) {
+    const conversation: any = await this.getConversation(
+      conversationId,
+      user,
+      false
+    );
+    conversation.delete();
+  }
 }

@@ -32,5 +32,9 @@ router.post(
   "/conversation/:conversationId/restore",
   catchAsyncController(restoreConversationFromTrash)
 );
+router.delete(
+  "/conversation/:conversationId",
+  catchAsyncController(moveConversationToTrash)
+);
 
 export default router;

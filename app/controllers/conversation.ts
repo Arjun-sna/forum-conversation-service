@@ -90,3 +90,16 @@ export async function restoreConversationFromTrash(
 
   res.send({ success: true });
 }
+
+export async function deleteConversation(req: CustomRequest, res: Response) {
+  const { currentUser, params } = req;
+  const { conversationId } = params;
+
+  // todo: validate messageData
+  const result = await conversationService.deleteConversation(
+    parseInt(conversationId),
+    currentUser
+  );
+
+  res.send({ success: true });
+}
