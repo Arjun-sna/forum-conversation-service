@@ -197,4 +197,29 @@ export default class ConversationService {
       throw err;
     }
   }
+
+  async changeConversationTrashStatus(
+    conversationId: number,
+    user: any,
+    trash: boolean
+  ) {
+    const conversation: any = await this.getConversation(
+      conversationId,
+      user,
+      false
+    );
+    if (conversation.trash !== trash) {
+      conversation.trash = trash;
+      conversation.save();
+    }
+  }
+
+  async deleteConversation(conversationId: number, user: any) {
+    const conversation: any = await this.getConversation(
+      conversationId,
+      user,
+      false
+    );
+    conversation.delete();
+  }
 }

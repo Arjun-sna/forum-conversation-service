@@ -56,3 +56,50 @@ export async function addMessage(req: CustomRequest, res: Response) {
 
   res.send(result);
 }
+
+export async function moveConversationToTrash(
+  req: CustomRequest,
+  res: Response
+) {
+  const { currentUser, params } = req;
+  const { conversationId } = params;
+
+  // todo: validate messageData
+  const result = await conversationService.changeConversationTrashStatus(
+    parseInt(conversationId),
+    currentUser,
+    true
+  );
+
+  res.send({ success: true });
+}
+
+export async function restoreConversationFromTrash(
+  req: CustomRequest,
+  res: Response
+) {
+  const { currentUser, params } = req;
+  const { conversationId } = params;
+
+  // todo: validate messageData
+  const result = await conversationService.changeConversationTrashStatus(
+    parseInt(conversationId),
+    currentUser,
+    false
+  );
+
+  res.send({ success: true });
+}
+
+export async function deleteConversation(req: CustomRequest, res: Response) {
+  const { currentUser, params } = req;
+  const { conversationId } = params;
+
+  // todo: validate messageData
+  const result = await conversationService.deleteConversation(
+    parseInt(conversationId),
+    currentUser
+  );
+
+  res.send({ success: true });
+}
