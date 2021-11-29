@@ -17,6 +17,6 @@ export default (schema: any) =>
         .join(", ");
       return next(new ServerError(errorMessage, 422));
     }
-    Object.assign(req, value);
+
     return next();
   };

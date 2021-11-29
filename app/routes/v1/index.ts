@@ -1,3 +1,4 @@
+import { Router } from "express";
 import {
   addMessage,
   createConversation,
@@ -6,16 +7,21 @@ import {
   moveConversationToTrash,
   restoreConversationFromTrash,
 } from "../../controllers/conversation";
-import { Router } from "express";
 import { getHealth } from "../../controllers/health";
 import { catchAsyncController } from "../../utils/helpers";
+import validator from "../../middlewares/validator";
+import { getConversationSchema } from "../../utils/validationSchema";
 
 const router = Router();
 
 router.get("/health", catchAsyncController(getHealth));
 
 router.post("/conversation", catchAsyncController(createConversation));
-router.get("/conversation", catchAsyncController(getConversations));
+router.get(
+  "/conversation",
+  validator(getConversationSchema),
+  catchAsyncController(getConversations)
+);
 router.get(
   "/conversation/:conversationId",
   catchAsyncController(getConversation)
