@@ -16,7 +16,7 @@ const exceptionHandler: ErrorRequestHandler = function (err, req, res, next) {
     });
 
     if (err.statusCode) {
-      res.status(err.code).send({ error: err.message || "Server error" });
+      res.status(err.statusCode).send({ error: err.message || "Server error" });
     } else {
       res.status(500).send({ error: "Server error" });
     }

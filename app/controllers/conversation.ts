@@ -35,8 +35,8 @@ export async function getConversations(req: CustomRequest, res: Response) {
 
 export async function getConversation(req: CustomRequest, res: Response) {
   const { currentUser, params } = req;
-  // todo: validate params
   const { conversationId } = params;
+
   const result = await conversationService.getConversation(
     parseInt(conversationId),
     currentUser
@@ -47,7 +47,6 @@ export async function getConversation(req: CustomRequest, res: Response) {
 export async function addMessage(req: CustomRequest, res: Response) {
   const { currentUser, body: messageData, params } = req;
   const { conversationId } = params;
-  // todo: validate messageData
 
   const result = await conversationService.addMessageToConversation(
     parseInt(conversationId),
@@ -65,7 +64,6 @@ export async function moveConversationToTrash(
   const { currentUser, params } = req;
   const { conversationId } = params;
 
-  // todo: validate messageData
   const result = await conversationService.changeConversationTrashStatus(
     parseInt(conversationId),
     currentUser,
@@ -82,7 +80,6 @@ export async function restoreConversationFromTrash(
   const { currentUser, params } = req;
   const { conversationId } = params;
 
-  // todo: validate messageData
   const result = await conversationService.changeConversationTrashStatus(
     parseInt(conversationId),
     currentUser,
@@ -96,7 +93,6 @@ export async function deleteConversation(req: CustomRequest, res: Response) {
   const { currentUser, params } = req;
   const { conversationId } = params;
 
-  // todo: validate messageData
   const result = await conversationService.deleteConversation(
     parseInt(conversationId),
     currentUser
