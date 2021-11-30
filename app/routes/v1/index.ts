@@ -16,6 +16,7 @@ import {
   createConversationSchema,
   getConversationsSchema,
 } from "../../utils/validationSchema";
+import { jwtMiddleware } from "../../middlewares/authMiddleware";
 
 const router = Router();
 
@@ -28,6 +29,7 @@ router.post(
 );
 router.get(
   "/conversation",
+  jwtMiddleware,
   validator(getConversationsSchema),
   catchAsyncController(getConversations)
 );

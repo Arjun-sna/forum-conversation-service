@@ -5,6 +5,8 @@ import logger from "../utils/logger";
 const exceptionHandler: ErrorRequestHandler = function (err, req, res, next) {
   if (err instanceof ServerError) {
     res.status(err.code).send({ error: err.message });
+  } else if (err.name === "UnauthorizedError") {
+    res.status(401).send({ error: err.message });
   } else {
     logger.info({
       url: req.url,
