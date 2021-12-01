@@ -4,13 +4,14 @@ import { CustomRequest, UserModel } from "../types";
 import { Response, NextFunction } from "express";
 import db from "../db";
 import { ServerError } from "../exceptions/ServerError";
+import config from "../config";
 
 const {
   models: { User },
 } = db;
 
 export const jwtMiddleware = jwt({
-  secret: "70126b7a94f61088e836b2d415fd7230bf4fa51d0be89858",
+  secret: config.jwt.secret,
   algorithms: ["HS256"],
   requestProperty: "jwtPayload",
 });
