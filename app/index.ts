@@ -2,14 +2,15 @@ import express from "express";
 import cors from "cors";
 import { initRoutes } from "./routes";
 import initializeSentry from "./sentry";
+import initializeKafka from "./kafka";
 import exceptionHandler from "./middlewares/exceptionHandler";
 import invalidRouteHandler from "./middlewares/invalidRouteHandler";
 import authMiddleware from "./middlewares/authMiddleware";
 
-const port = process.env.PORT || 3000;
 const app = express();
 
 initializeSentry();
+initializeKafka();
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
