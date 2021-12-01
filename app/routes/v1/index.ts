@@ -16,6 +16,7 @@ import {
   createConversationSchema,
   getConversationsSchema,
 } from "../../utils/validationSchema";
+import { jwtMiddleware } from "../../middlewares/authMiddleware";
 
 const router = Router();
 

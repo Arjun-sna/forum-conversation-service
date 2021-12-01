@@ -50,6 +50,7 @@ export interface UserModel extends Model<User, UserCreationAttributes>, User {}
 
 export interface CustomRequest extends Request {
   currentUser: UserModel;
+  jwtPayload: any;
 }
 
 export enum ConversationType {
