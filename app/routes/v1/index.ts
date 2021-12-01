@@ -29,7 +29,6 @@ router.post(
 );
 router.get(
   "/conversation",
-  jwtMiddleware,
   validator(getConversationsSchema),
   catchAsyncController(getConversations)
 );

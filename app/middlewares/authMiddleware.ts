@@ -1,4 +1,5 @@
 import jwt from "express-jwt";
+import unless from "express-unless";
 import { CustomRequest, UserModel } from "../types";
 import { Response, NextFunction } from "express";
 import db from "../db";
@@ -14,7 +15,7 @@ export const jwtMiddleware = jwt({
   requestProperty: "jwtPayload",
 });
 
-export default async function (
+async function authMiddleware(
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -36,3 +37,6 @@ export default async function (
     }
   });
 }
+authMiddleware.unless = unless;
+
+export default authMiddleware;
