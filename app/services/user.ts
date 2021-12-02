@@ -18,7 +18,12 @@ export default class UserService {
     }
 
     try {
-      const user: any = await User.findOrCreate(data);
+      const user: any = await User.findOrCreate({
+        where: {
+          id: data.id,
+        },
+        defaults: data,
+      });
       logger.info(`User created  ${user.username}`);
     } catch (err) {
       logger.info(
