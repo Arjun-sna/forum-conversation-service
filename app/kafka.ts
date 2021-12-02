@@ -1,11 +1,12 @@
-import { Consumer, KafkaClient, Offset } from "kafka-node";
+import { Consumer, KafkaClient } from "kafka-node";
 import Kafka from "node-rdkafka";
 import { Kafka as KafkaJs } from "kafkajs";
+import config from "./config";
 
 export default function () {
   const client = new KafkaClient({
     kafkaHost: "pkc-lzvrd.us-west4.gcp.confluent.cloud:9092",
-    sslOptions: {
+    sasl: {
       mechanism: "plain",
       username: "CE5KM5G777Z2OYF2",
       password:
@@ -36,7 +37,7 @@ export function rdKafka() {
       "metadata.broker.list": "pkc-lzvrd.us-west4.gcp.confluent.cloud:9092",
       // "group.id": "forum-conv-client",
       "enable.auto.commit": true,
-      "security.protocol": "sasl_ssl",
+      "security.protocol": "ssl",
       "sasl.mechanism": "plain",
       "sasl.username": "CE5KM5G777Z2OYF2",
       "sasl.password":
@@ -74,18 +75,17 @@ export function rdKafka() {
 
 export async function kafkajs() {
   const kafka = new KafkaJs({
-    clientId: "my-app",
-    brokers: ["pkc-lzvrd.us-west4.gcp.confluent.cloud:9092"],
+    clientId: "forum-conv-service",
+    brokers: [config.kafka.brokerUrl],
     ssl: true,
     sasl: {
       mechanism: "plain",
-      username: "CE5KM5G777Z2OYF2",
-      password:
-        "p/NAe4shRWyhyeUglXH/o/2MMWuHCirGa6O0ia/VzcYSa288djkQwbssRO96eOPt",
+      username: config.kafka.saslUsername,
+      password: config.kafka.saslPassword,
     },
   });
 
-  const consumer = kafka.consumer({ groupId: "test-group" });
+  const consumer = kafka.consumer({ groupId: "forum-conv-services" });
   await consumer.connect();
   await consumer.subscribe({ topic: "forum_app_sample", fromBeginning: false });
 
