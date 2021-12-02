@@ -9,12 +9,11 @@ const userService = new UserService();
 
 export default function () {
   const client = new KafkaClient({
-    kafkaHost: "pkc-lzvrd.us-west4.gcp.confluent.cloud:9092",
+    kafkaHost: config.kafka.brokerUrl,
     sasl: {
       mechanism: "plain",
-      username: "CE5KM5G777Z2OYF2",
-      password:
-        "p/NAe4shRWyhyeUglXH/o/2MMWuHCirGa6O0ia/VzcYSa288djkQwbssRO96eOPt",
+      username: config.kafka.saslUsername,
+      password: config.kafka.saslPassword,
     },
   });
   const topics = [{ topic: "forum_app_sample" }];
@@ -38,14 +37,13 @@ export function rdKafka() {
   const consumer = new Kafka.KafkaConsumer(
     {
       debug: "all",
-      "metadata.broker.list": "pkc-lzvrd.us-west4.gcp.confluent.cloud:9092",
+      "metadata.broker.list": config.kafka.brokerUrl,
       // "group.id": "forum-conv-client",
       "enable.auto.commit": true,
       "security.protocol": "ssl",
       "sasl.mechanism": "plain",
-      "sasl.username": "CE5KM5G777Z2OYF2",
-      "sasl.password":
-        "p/NAe4shRWyhyeUglXH/o/2MMWuHCirGa6O0ia/VzcYSa288djkQwbssRO96eOPt",
+      "sasl.username": config.kafka.saslUsername,
+      "sasl.password": config.kafka.saslPassword,
     },
     {}
   );
