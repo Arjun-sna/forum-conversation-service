@@ -30,3 +30,9 @@ export const addMessageSchema = {
     conversationId: Joi.number().required(),
   }).required(),
 };
+
+export const userCreateSchema = Joi.object({
+  id: Joi.number().required(),
+  username: Joi.string().required(),
+  email: Joi.string().required(),
+}).required();

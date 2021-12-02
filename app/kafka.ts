@@ -2,6 +2,10 @@ import { Consumer, KafkaClient } from "kafka-node";
 import Kafka from "node-rdkafka";
 import { Kafka as KafkaJs } from "kafkajs";
 import config from "./config";
+import UserService from "./services/user";
+import logger from "./utils/logger";
+
+const userService = new UserService();
 
 export default function () {
   const client = new KafkaClient({
@@ -90,12 +94,14 @@ export async function kafkajs() {
   await consumer.subscribe({ topic: "forum_app_sample", fromBeginning: false });
 
   await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
-      console.log({
-        partition,
+    eachMessage: async ({ message }) => {
+      logger.info({
+        message: "Message received",
         offset: message.offset,
-        value: message.value.toString(),
       });
+      await userService.handleUserCreateKafkaEven(
+        JSON.parse(message.value.toString())
+      );
     },
   });
 }
