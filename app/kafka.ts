@@ -1,5 +1,6 @@
 import { Consumer, KafkaClient, Offset } from "kafka-node";
 import Kafka from "node-rdkafka";
+import { Kafka as KafkaJs } from "kafkajs";
 
 export default function () {
   const client = new KafkaClient({
@@ -69,4 +70,32 @@ export function rdKafka() {
   });
   console.log("Connection to topic");
   consumer.connect();
+}
+
+export async function kafkajs() {
+  const kafka = new KafkaJs({
+    clientId: "my-app",
+    brokers: ["pkc-lzvrd.us-west4.gcp.confluent.cloud:9092"],
+    ssl: true,
+    sasl: {
+      mechanism: "plain",
+      username: "CE5KM5G777Z2OYF2",
+      password:
+        "p/NAe4shRWyhyeUglXH/o/2MMWuHCirGa6O0ia/VzcYSa288djkQwbssRO96eOPt",
+    },
+  });
+
+  const consumer = kafka.consumer({ groupId: "test-group" });
+  await consumer.connect();
+  await consumer.subscribe({ topic: "forum_app_sample", fromBeginning: false });
+
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      console.log({
+        partition,
+        offset: message.offset,
+        value: message.value.toString(),
+      });
+    },
+  });
 }
