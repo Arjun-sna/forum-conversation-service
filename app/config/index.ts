@@ -11,6 +11,24 @@ const envVarsSchema = Joi.object()
       .required(),
     PORT: Joi.number().default(3000),
     JWT_SECRET: Joi.string().required().description("JWT secret key"),
+    ENABLE_KAFKA: Joi.bool()
+      .required()
+      .description("Should enable kafka consumer"),
+    KAFKA_BROKER_URL: Joi.when("ENABLE_KAFKA", {
+      is: true,
+      then: Joi.string().required(),
+      otherwise: Joi.string(),
+    }),
+    KAFKA_SASL_USERNAME: Joi.when("ENABLE_KAFKA", {
+      is: true,
+      then: Joi.string().required(),
+      otherwise: Joi.string(),
+    }),
+    KAFKA_SASL_PASSWORD: Joi.when("ENABLE_KAFKA", {
+      is: true,
+      then: Joi.string().required(),
+      otherwise: Joi.string(),
+    }),
   })
   .unknown();
 
@@ -27,5 +45,11 @@ export default {
   port: envVars.PORT,
   jwt: {
     secret: envVars.JWT_SECRET,
+  },
+  kafka: {
+    enabled: envVars.ENABLE_KAFKA,
+    brokerUrl: envVars.KAFKA_BROKER_URL,
+    saslUsername: envVars.KAFKA_SASL_USERNAME,
+    saslPassword: envVars.KAFKA_SASL_PASSWORD,
   },
 };
