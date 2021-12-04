@@ -17,6 +17,12 @@ const getSequelizeInstance = () => {
   const { database, username, password } = dbConfig;
   const config = {
     ...dbConfig,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     // logging: logger.info,
   };
   return new Sequelize(database, username, password, config);
